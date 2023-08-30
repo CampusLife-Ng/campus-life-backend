@@ -16,6 +16,19 @@ const userSchema = new mongoose.Schema({
   googleId: {
     type: String,
   },
+  paystack_ref: {
+    type: String,
+  },
+  isSubscribed: {
+    type: Boolean,
+  },
+  timeSubscribed: {
+    type: Date,
+  },
+  subscriptionEndDate: {
+    type: Date,
+  },
+  subscriptionDuration: { type: Number },
   role: {
     type: String,
     default: "user",

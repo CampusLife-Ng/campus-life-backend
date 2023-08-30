@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db.js");
+const ngrok = require("@ngrok/ngrok");
 
 const app = express();
 dotenv.config();
@@ -25,6 +26,11 @@ app.use("/suggestlodges", suggestedLodgeRoute);
 app.use("/lodges", lodgeRoute);
 app.use("/lodges/comments", commentRoute);
 
+app.get('/disconnectNgrok', async (req, res) => {
+  await ngrok.disconnect();
+  res.send("Ngrok disconnected");
+});
+
 connectDB().then(() => {
   app.listen(PORT, () => {
     console.log(
@@ -32,3 +38,10 @@ connectDB().then(() => {
     );
   });
 });
+
+if (process.env.NODE_ENV == "development") {
+  (async function () {
+    const url = await ngrok.connect({ addr: 3030, authtoken_from_env: true, authtoken: process.env.NGROK_AUTHTOKEN });
+    console.log(`Ingress established at: ${url}`);
+  })();
+}

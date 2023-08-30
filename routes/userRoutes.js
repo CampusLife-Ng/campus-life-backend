@@ -12,15 +12,27 @@ const {
   updateUser,
   deleteUser,
 } = require("../controllers/userController");
+const {
+  createPlan,
+  initializeTrans,
+  verifyTrans,
+  addWebhook,
+  getPlans,
+} = require("../controllers/subscriptionController");
 const { register, login, auth, tokenIsValid, refreshAccessToken } = require("../middleware/auth");
 
 userRoute.get("/getUser/:id", auth, getUser);
 userRoute.get("/getUsers", auth, onlyAdmins, getUsers);
 userRoute.get("/refresh", refreshAccessToken);
+userRoute.get("/getPlans", getPlans);
 
 userRoute.post("/register", register);
 userRoute.post("/login", login);
 userRoute.post("/tokenIsValid", tokenIsValid);
+userRoute.post("/initializetrans/:id", initializeTrans);
+userRoute.post("/createPlan", createPlan);
+userRoute.post("/paystackWebhook", addWebhook);
+userRoute.post("/verifytrans/:id", verifyTrans);
 
 userRoute.put("/updateUser/:id", auth, updateUser);
 userRoute.delete("/deleteUser/:id", auth, deleteUser);
